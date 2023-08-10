@@ -1,0 +1,9 @@
+Book My Show Application !!
+1) User
+2) Admin
+[H[2J
+1) Sign In
+2) Sign Up
+3) Exit
+Redirecting to Sign In Page
+[H[2JEnter your Login ID: 
