@@ -165,7 +165,9 @@ public class MovieBookingApplication
 	                			userController.backup();
 	                			System.out.print("\033[H\033[2J");
 	                		}else if(userOption==8) {
+	                			customOut.setWriteToLogFile(false);
 	                			userController.logs(sc);
+	                			customOut.setWriteToLogFile(true);
 	                			System.out.print("\033[H\033[2J");
 	                		}else if(userOption==9) {
 	                			authController.passwordReset(user.getLoginId() ,sc);
@@ -251,6 +253,7 @@ public class MovieBookingApplication
 	    private final StringBuilder logData;
 	    private final String logFileName;
 	    private final InputStream inputStream;
+	    private boolean writeToLogFile = true;
 
 	    public CustomOutputStream(PrintStream consoleOut, OutputStream fileOut, String logFileName) {
 	        this.consoleOut = consoleOut;
@@ -264,9 +267,11 @@ public class MovieBookingApplication
 	    public void write(int b) throws IOException {
 	        // Write to both console and file
 	        consoleOut.write(b);
-	        logData.append((char) b);
-	        //System.out.println("write 1: "+logData);
-	        fileOut.write(b); // Write to the log file
+	        if (writeToLogFile) {
+	        	logData.append((char) b);
+		        //System.out.println("write 1: "+logData);
+		        fileOut.write(b); // Write to the log file
+	        }
 	    }
 
 	    @Override
@@ -291,7 +296,11 @@ public class MovieBookingApplication
 	        }
 	        fileOut.write(b, off, len);
 	    }
-
+	    
+	    public void setWriteToLogFile(boolean writeToLogFile) {
+	        this.writeToLogFile = writeToLogFile;
+	    }
+	    
 	    @Override
 	    public void close() throws IOException {
 	    	//System.out.println("write 3: "+logFiles.get(logFileName));
