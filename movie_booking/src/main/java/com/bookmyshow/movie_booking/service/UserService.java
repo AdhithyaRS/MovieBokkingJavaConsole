@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
 
+import com.bookmyshow.movie_booking.MovieBookingApplication.CustomOutputStream;
 import com.bookmyshow.movie_booking.model.Movies;
 import com.bookmyshow.movie_booking.model.Movies.Availability;
 import com.bookmyshow.movie_booking.model.Movies.Status;
@@ -171,7 +172,7 @@ public class UserService {
 		System.out.println("This option yet to be implemented");
 	}
 
-	public void viewLogs(Scanner sc) {
+	public void viewLogs(Scanner sc, CustomOutputStream customOut) {
 		// TODO Auto-generated method stub
 		HashMap<String, String> logs = dataService.loadLogFilesFromJson();
 		String date=null;
@@ -191,9 +192,10 @@ public class UserService {
 				date="console_logs_"+date+".txt";
 				if(logs.containsKey(date)) {
 					System.out.println("--------------->START");
+					customOut.setWriteToLogFile(false);
 					System.out.println(logs.get(date));
+					customOut.setWriteToLogFile(true);
 					System.out.println("--------------->END");
-					
 				}else System.out.println("No logs available in the mentioned date or check the format!!");
 				System.out.println("1) continue logs menu\n2) Go to main menu");
 				option= sc.nextInt();
@@ -420,7 +422,7 @@ public class UserService {
 
 	    int maxSeatNumWidth = String.valueOf(seats[0].length).length();
 	    int maxRowLabelWidth = String.valueOf(seats.length).length();
-	    System.out.print("  ");
+	    System.out.print("    ");
 	    for (int seatNum = 1; seatNum <= seats[0].length; seatNum++) {
 	        int padding = maxSeatNumWidth - String.valueOf(seatNum).length();
 	        String seatNumStr = " ".repeat(padding) + seatNum;
@@ -430,7 +432,7 @@ public class UserService {
 
 	    for (int i = 0; i < seats.length; i++) {
 	        int paddingRowLabel = maxRowLabelWidth - String.valueOf(i + 1).length();
-	        String rowLabel = "".repeat(paddingRowLabel) + (i + 1) + "  ";
+	        String rowLabel = "".repeat(paddingRowLabel) + (i + 1) + (i+1<10?"   ":" ");
 	        System.out.print(rowLabel);
 	        
 	        for (int j = 0; j < seats[i].length; j++) {

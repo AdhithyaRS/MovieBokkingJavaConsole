@@ -165,9 +165,9 @@ public class MovieBookingApplication
 	                			userController.backup();
 	                			System.out.print("\033[H\033[2J");
 	                		}else if(userOption==8) {
-	                			customOut.setWriteToLogFile(false);
-	                			userController.logs(sc);
-	                			customOut.setWriteToLogFile(true);
+	                			//customOut.setWriteToLogFile(false);
+	                			userController.logs(sc, customOut);
+	                			//customOut.setWriteToLogFile(true);
 	                			System.out.print("\033[H\033[2J");
 	                		}else if(userOption==9) {
 	                			authController.passwordReset(user.getLoginId() ,sc);
@@ -247,7 +247,7 @@ public class MovieBookingApplication
             e.printStackTrace();
         }
     }
-	private static class CustomOutputStream extends OutputStream {
+	public static class CustomOutputStream extends OutputStream {
 	    private final PrintStream consoleOut;
 	    private final OutputStream fileOut;
 	    private final StringBuilder logData;
@@ -278,11 +278,13 @@ public class MovieBookingApplication
 	    public void write(byte[] b) throws IOException {
 	        // Write to both console and file
 	        consoleOut.write(b);
-	        for (byte value : b) {
-	            logData.append((char) value); // Capture log messages as strings
-	            
+	        if (writeToLogFile) {
+		        for (byte value : b) {
+		            logData.append((char) value); // Capture log messages as strings
+		            
+		        }
+		        fileOut.write(b); // Write to the log file
 	        }
-	        fileOut.write(b); // Write to the log file
 	        //System.out.println("write 2: "+logData);
 	    }
 
@@ -290,11 +292,13 @@ public class MovieBookingApplication
 	    public void write(byte[] b, int off, int len) throws IOException {
 	        // Write to both console and file
 	        consoleOut.write(b, off, len);
-	        for (int i = off; i < off + len; i++) {
-	            logData.append((char) b[i]);
-	            
+	        if (writeToLogFile) {
+		        for (int i = off; i < off + len; i++) {
+		            logData.append((char) b[i]);
+		            
+		        }
+		        fileOut.write(b, off, len);
 	        }
-	        fileOut.write(b, off, len);
 	    }
 	    
 	    public void setWriteToLogFile(boolean writeToLogFile) {

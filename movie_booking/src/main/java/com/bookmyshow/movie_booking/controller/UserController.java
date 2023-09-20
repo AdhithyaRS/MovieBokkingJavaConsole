@@ -3,6 +3,7 @@ package com.bookmyshow.movie_booking.controller;
 
 import java.util.Scanner;
 
+import com.bookmyshow.movie_booking.MovieBookingApplication.CustomOutputStream;
 import com.bookmyshow.movie_booking.service.UserService;
 
 
@@ -57,9 +58,9 @@ public class UserController {
 
 
 
-	public void logs(Scanner sc) {
+	public void logs(Scanner sc, CustomOutputStream customOut) {
 		// TODO Auto-generated method stub
-		userService.viewLogs(sc);
+		userService.viewLogs(sc, customOut);
 	}
 
 
