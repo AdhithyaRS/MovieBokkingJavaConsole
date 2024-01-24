@@ -187,6 +187,7 @@ public class MovieBookingApplication
 	            		
 	            	}
 	            	
+	            	
 	            }else {
 	            	System.out.println("Enter a valid option!!");
 	            	try {
